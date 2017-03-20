@@ -24,6 +24,7 @@ while 1:
 	temperatura = call(["/opt/vc/bin/vcgencmd", "measure_temp"])
 	#salva em algum lugar pra ver historico
 
+	temperatura = temperatura.replace("temp=","").replace("'C","");
 
 	#verifica se a temperatura atual é a maior registrada
 	if temperatura > max_temperatura:
