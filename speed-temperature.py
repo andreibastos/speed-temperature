@@ -33,7 +33,7 @@ while 1:
 	diff_temperatura = max_temperatura - min_temperatura
 
 	duty = 0
-	if diff_temperatura!=0
+	if diff_temperatura!=0:
 		duty = temperatura/(diff_temperatura*1.2)
 
 	print duty
