@@ -5,7 +5,7 @@ from subprocess import call, Popen, PIPE
 import time
 
 PWM_FREQUENCY = 100  #Hertz
-GPIO_FAN = 1 #pin number
+GPIO_FAN = 14 #pin number
 
 #configurando GPIO
 import RPi.GPIO as GPIO
