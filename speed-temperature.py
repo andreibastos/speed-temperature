@@ -21,8 +21,7 @@ while 1:
 		
 
 	#ler temperatura
-	temperatura = call(["/opt/vc/bin/vcgencmd", "measure_temp"]).replace("temp=","").replace("'C","");
-
+	temperatura = call(["/opt/vc/bin/vcgencmd", "measure_temp"])
 	#salva em algum lugar pra ver historico
 
 
