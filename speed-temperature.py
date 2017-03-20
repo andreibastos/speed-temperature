@@ -37,7 +37,7 @@ while 1:
 
 	print duty
 
-	time.spleep(1);
+	time.sleep(1);
 
 
 
