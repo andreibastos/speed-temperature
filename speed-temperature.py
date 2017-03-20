@@ -1,18 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from subprocess import call
+from subprocess import call, Popen, PIPE
 import time
 
 PWM_FREQUENCY = 100  #Hertz
 GPIO_FAN = 5 #pin number
 
 #configurando GPIO
-# import RPi.GPIO as IO
-# IO.setmode (IO.BCM)
-# GPIO.setup(GPIO_FAN ,GPIO.OUT)
-# pwm=GPIO.PWM(GPIO_FAN,100)     #Configura para 100 Hz
-# pwm.start(100)
+import RPi.GPIO as GPIO
+
+GPIO.setmode (GPIO.BCM)
+GPIO.setup(GPIO_FAN ,GPIO.OUT)
+GPIO.cleanup()
+GPIO.setmode (GPIO.BCM)
+GPIO.setup(GPIO_FAN ,GPIO.OUT) 
+pwm=GPIO.PWM(GPIO_FAN,100)     #Configura para 100 Hz
+pwm.start(100)
 
 max_temperatura = 0; 
 min_temperatura = 0;
@@ -20,11 +24,13 @@ min_temperatura = 0;
 while 1:
 		
 
-	#ler temperatura
-	temperatura = call(["/opt/vc/bin/vcgencmd", "measure_temp"])
-	#salva em algum lugar pra ver historico
+	#ler temperatura	
+	temperatura = float(Popen("/opt/vc/bin/vcgencmd measure_temp", shell=True, stdout=PIPE).stdout.read().replace("temp=","").replace("'C","").replace("\n",""))
+	print "temperatura atual: \t" + str(temperatura)  + "°C"
 
-	temperatura = temperatura.replace("temp=","").replace("'C","");
+
+	#salva em algum lugar pra ver historico
+	
 
 	#verifica se a temperatura atual é a maior registrada
 	if temperatura > max_temperatura:
@@ -34,9 +40,11 @@ while 1:
 
 	duty = 0
 	if diff_temperatura!=0:
-		duty = temperatura/(diff_temperatura*1.2)
+		duty = int((temperatura/(diff_temperatura*1.2))*100)
 
-	print duty
+	print "duty: \t" + str(duty) + "%"
+	pwm.ChangeDutyCycle(duty);
+	print("\n")
 
 	time.sleep(1);
 
